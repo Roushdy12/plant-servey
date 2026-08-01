@@ -264,32 +264,78 @@
   .status-seg button .d{width:11px;height:11px;border-radius:50%;flex:none;}
   .status-seg button.on{color:var(--ink);background:#fff;}
 
-  /* cement supply rows (company + supplier) */
-  .supply-list{display:flex;flex-direction:column;gap:8px;}
-  .supply-row{
-    display:grid;grid-template-columns:1fr 1fr auto;gap:7px;align-items:center;
-    background:#faf9f5;border:1px solid var(--line-soft);border-radius:9px;padding:7px;
+  /* cement entries: company + type + suppliers + dated volume log */
+  .entries-empty{font-size:12.5px;color:var(--muted-2);font-style:italic;padding:2px;}
+  .entry-card{
+    background:#faf9f5;border:1px solid var(--line-soft);border-radius:10px;
+    padding:11px;margin-bottom:9px;
   }
-  .supply-row input{background:#fff;padding:8px 9px;font-size:13px;}
-  .supply-row .rm{
-    width:30px;height:30px;flex:none;border:1px solid var(--line);background:#fff;border-radius:7px;
-    cursor:pointer;color:var(--competitor);display:grid;place-items:center;
-  }
-  .supply-row .rm:hover{background:#faecea;}
-  .supply-add{
-    align-self:flex-start;margin-top:2px;background:none;border:1px dashed var(--line);
+  .entry-head{display:flex;gap:7px;align-items:center;}
+  .entry-head select{flex:1;min-width:0;background:#fff;padding:8px 9px;font-size:13.5px;
+    border:1px solid var(--line);border-radius:8px;font-family:inherit;color:var(--ink);}
+  .ce-type{width:100%;margin-top:7px;background:#fff;border:1px solid var(--line);border-radius:8px;
+    padding:8px 10px;font-size:13px;font-family:inherit;}
+  .mini-label{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--muted);margin:9px 0 5px;}
+  .mini-row{display:flex;gap:6px;align-items:center;margin-bottom:5px;}
+  .mini-row input{background:#fff;border:1px solid var(--line);border-radius:7px;padding:7px 9px;font-size:12.5px;font-family:inherit;}
+  .mini-row .sup-in{flex:1;min-width:0;}
+  .mini-row .vol-date{flex:1;min-width:0;font-family:"IBM Plex Mono",monospace;}
+  .mini-row .vol-tons{width:84px;flex:none;font-family:"IBM Plex Mono",monospace;}
+  .mini-rm{width:26px;height:26px;flex:none;border:1px solid var(--line);background:#fff;border-radius:6px;
+    cursor:pointer;color:var(--competitor);display:grid;place-items:center;font-size:12px;}
+  .mini-rm:hover{background:#faecea;}
+  .mini-add{background:none;border:1px dashed var(--line);border-radius:7px;color:var(--blueprint);
+    font-family:inherit;font-size:12px;font-weight:600;padding:6px 10px;cursor:pointer;margin-top:2px;}
+  .mini-add:hover{background:var(--blueprint-tint);border-style:solid;border-color:#cfe0e9;}
+  .entry-rm{width:30px;height:30px;flex:none;border:1px solid var(--line);background:#fff;border-radius:7px;
+    cursor:pointer;color:var(--competitor);display:grid;place-items:center;}
+  .entry-rm:hover{background:#faecea;}
+  .entries-add{
+    align-self:flex-start;background:none;border:1px dashed var(--line);
     border-radius:8px;color:var(--blueprint);font-family:inherit;font-size:12.5px;font-weight:600;
     padding:8px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;
   }
-  .supply-add:hover{background:var(--blueprint-tint);border-style:solid;border-color:#cfe0e9;}
-  .supply-add svg{width:14px;height:14px;}
-  .supply-empty{font-size:12.5px;color:var(--muted-2);font-style:italic;padding:2px;}
-  /* supply pairs in detail view */
-  .supply-view{display:flex;flex-direction:column;gap:8px;}
-  .supply-item{border:1px solid var(--line-soft);border-radius:8px;padding:8px 10px;background:#faf9f5;}
-  .supply-item .co{font-weight:600;font-size:13.5px;}
-  .supply-item .sp{font-size:12px;color:var(--muted);margin-top:2px;}
-  .supply-item .sp b{font-weight:600;color:var(--ink);}
+  .entries-add:hover{background:var(--blueprint-tint);border-style:solid;border-color:#cfe0e9;}
+  .entries-add svg{width:14px;height:14px;}
+  .own-star{color:#c98a12;}
+
+  /* cement entries in detail view */
+  .cev-list{display:flex;flex-direction:column;gap:9px;}
+  .cev-item{border:1px solid var(--line-soft);border-radius:9px;padding:10px 12px;background:#faf9f5;}
+  .cev-item .co-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .cev-item .co{font-weight:600;font-size:13.5px;}
+  .cev-item .own-badge{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    background:#fbf0da;color:#8a5407;border-radius:20px;padding:2px 8px;}
+  .cev-item .ty{font-size:12px;color:var(--muted);margin-top:2px;}
+  .cev-item .sp{font-size:12px;color:var(--muted);margin-top:5px;}
+  .cev-item .sp b{font-weight:600;color:var(--ink);}
+  .cev-item .vh{font-size:12px;color:var(--muted);margin-top:6px;}
+  .vh-row{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:12px;padding:2px 0;}
+  .trend{display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:13px;margin-top:7px;
+    padding:4px 10px;border-radius:20px;}
+  .trend.up{background:#e6f2ea;color:#1f5e35;}
+  .trend.down{background:#fbe9e7;color:#93281c;}
+  .trend.flat{background:#f1f0ea;color:var(--muted);}
+
+  /* progress report */
+  .report-modal .modal-card{width:560px;max-width:96vw;max-height:86vh;display:flex;flex-direction:column;padding:0;}
+  .report-head{padding:18px 22px 14px;border-bottom:1px solid var(--line-soft);}
+  .report-head h2{font-family:"Archivo",sans-serif;font-weight:700;font-size:19px;margin:0 0 4px;}
+  .report-sum{display:flex;gap:18px;margin-top:12px;flex-wrap:wrap;}
+  .report-sum .s{flex:1;min-width:120px;}
+  .report-sum .s .n{font-family:"Archivo",sans-serif;font-size:24px;font-weight:800;line-height:1;}
+  .report-sum .s .l{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.05em;
+    text-transform:uppercase;color:var(--muted);margin-top:4px;}
+  .report-sum .s .n.up{color:#1f5e35;}
+  .report-sum .s .n.down{color:#93281c;}
+  .report-body{flex:1;overflow-y:auto;padding:8px 22px 18px;}
+  .report-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line-soft);}
+  .report-row .nm{flex:1;min-width:0;font-size:13.5px;font-weight:600;}
+  .report-row .detail{font-size:11.5px;color:var(--muted);font-family:"IBM Plex Mono",monospace;}
+  .report-empty{padding:30px 10px;text-align:center;color:var(--muted);font-size:13px;}
+  .report-foot{padding:12px 22px;border-top:1px solid var(--line-soft);background:#fbfaf7;display:flex;justify-content:flex-end;}
+
 
   /* ---------- Add hint banner ---------- */
   .add-hint{
@@ -420,6 +466,11 @@
       <span class="lbl">Install app</span>
     </button>
 
+    <button class="btn btn-ghost" id="reportBtn">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V10M11 19V5M18 19v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span class="lbl">Progress</span>
+    </button>
+
     <div class="menu" id="addMenu">
       <button class="btn btn-primary" id="addBtn" aria-haspopup="true">
         <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -514,6 +565,46 @@
   </div>
 </div>
 
+<div class="modal" id="companyModal" aria-hidden="true">
+  <div class="modal-card" style="width:380px;">
+    <div class="modal-head">
+      <h2>Add cement company</h2>
+      <button class="side-close" id="cmClose" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="field" style="margin-top:12px;">
+      <label>Company name</label>
+      <input id="cmName" type="text" placeholder="e.g. Suez Cement" />
+    </div>
+    <label style="display:flex;align-items:center;gap:9px;font-size:13.5px;margin:8px 2px 2px;cursor:pointer;">
+      <input id="cmOwn" type="checkbox" style="width:17px;height:17px;flex:none;" />
+      This is our own company (e.g. Amreyah)
+    </label>
+    <div class="modal-foot">
+      <button class="btn btn-map" id="cmCancel" style="width:auto;padding:0 16px;flex:0 0 auto;">Cancel</button>
+      <button class="btn btn-edit" id="cmSave" style="flex:0 0 auto;">Add company</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal report-modal" id="reportModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="report-head">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div style="flex:1;">
+          <h2>Our volume progress</h2>
+          <span style="font-size:12px;color:var(--muted)">Change in our company's supply since your first record at each plant</span>
+        </div>
+        <button class="side-close" id="rpClose" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      </div>
+      <div class="report-sum" id="rpSummary"></div>
+    </div>
+    <div class="report-body" id="rpBody"></div>
+    <div class="report-foot">
+      <button class="btn btn-map" id="rpExport" style="width:auto;padding:0 16px;flex:0 0 auto;">Export report CSV</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -602,27 +693,60 @@
     return 'none';                        // competitor / prospect / unknown -> no share
   }
   function normalize(p){
-    var sup = [];
-    if (Array.isArray(p.supplies)){
-      sup = p.supplies
-        .filter(function(x){ return x && (x.company || x.supplier); })
-        .map(function(x){ return { company:String(x.company||''), supplier:String(x.supplier||'') }; });
+    var entries = [];
+    if (Array.isArray(p.cementEntries)){
+      entries = p.cementEntries.map(function(e){
+        var vol = (Array.isArray(e.volumeLog) ? e.volumeLog : [])
+          .filter(function(v){ return v && v.date; })
+          .map(function(v){ return { date:String(v.date), tons: Number(v.tons)||0 }; })
+          .sort(function(a,b){ return a.date<b.date?-1:a.date>b.date?1:0; });
+        return {
+          id: e.id || uid(),
+          company: String(e.company||''),
+          type: String(e.type||''),
+          suppliers: (Array.isArray(e.suppliers) ? e.suppliers : []).filter(Boolean).map(String),
+          volumeLog: vol
+        };
+      }).filter(function(e){ return e.company || e.type || e.suppliers.length || e.volumeLog.length; });
+    } else if (Array.isArray(p.supplies)){
+      // migrate old company/supplier-pair model
+      entries = p.supplies.filter(function(x){ return x && (x.company||x.supplier); }).map(function(x){
+        return { id:uid(), company:String(x.company||''), type:String(p.cementTypes||''),
+          suppliers:x.supplier?[String(x.supplier)]:[], volumeLog:[] };
+      });
     } else if (p.vendor){
-      sup = [{ company:String(p.vendor), supplier:'' }];   // migrate old single vendor field
+      entries = [{ id:uid(), company:String(p.vendor), type:String(p.cementTypes||''), suppliers:[], volumeLog:[] }];
     }
     return {
       id: p.id || uid(),
       name: p.name || 'Unnamed plant',
       status: migStatus(p.status),
-      supplies: sup,
-      cementTypes: p.cementTypes || '',
-      volume: p.volume || '',
+      cementEntries: entries,
       contactName: p.contactName || '',
       phone: p.phone || '',
       surveyDate: p.surveyDate || '',
       notes: p.notes || '',
       lat: p.lat, lng: p.lng
     };
+  }
+
+  // ---- our-company volume trend for one plant ----
+  // Merges volume records across every cement entry flagged as "our company",
+  // then compares the earliest recorded tons to the latest.
+  function ownTrend(p){
+    var ownNames = {};
+    state.companies.forEach(function(c){ if (c.isOwn) ownNames[c.name.toLowerCase()] = true; });
+    var points = [];
+    (p.cementEntries||[]).forEach(function(e){
+      if (e.company && ownNames[e.company.toLowerCase()]){
+        e.volumeLog.forEach(function(v){ points.push(v); });
+      }
+    });
+    if (!points.length) return null;
+    points.sort(function(a,b){ return a.date<b.date?-1:a.date>b.date?1:0; });
+    var first = points[0], last = points[points.length-1];
+    var pct = (first.tons>0) ? ((last.tons-first.tons)/first.tons*100) : (last.tons>0 ? 100 : 0);
+    return { first:first, last:last, pct:pct, count:points.length };
   }
   var ALEX = [31.2001, 29.9187];
 
@@ -688,7 +812,30 @@
     }
   };
 
-  var state = { plants:[], filter:'all', search:'', selected:null, adding:false, unlocked:false };
+  var fbCompaniesRef = (LIVE_MODE) ? firebase.database().ref('companies') : null;
+  var COMPANIES_LS_KEY = 'plantSurvey.companies';
+  var CompanyStore = {
+    async load(){
+      if (LIVE_MODE && fbCompaniesRef){
+        try{ var snap = await fbCompaniesRef.once('value'); var arr = snap.val() || []; return Array.isArray(arr)?arr:[]; }
+        catch(e){ console.error('company live load failed', e); }
+      }
+      try{
+        var raw = window.localStorage ? window.localStorage.getItem(COMPANIES_LS_KEY) : null;
+        return raw ? JSON.parse(raw) : [];
+      }catch(e){ return []; }
+    },
+    async save(list){
+      if (LIVE_MODE && fbCompaniesRef){
+        try{ await fbCompaniesRef.set(list); return; }catch(e){ console.error('company live save failed', e); }
+      }
+      try{ if (window.localStorage) window.localStorage.setItem(COMPANIES_LS_KEY, JSON.stringify(list)); }
+      catch(e){}
+    }
+  };
+  async function persistCompanies(){ await CompanyStore.save(state.companies); }
+
+  var state = { plants:[], companies:[], filter:'all', search:'', selected:null, adding:false, unlocked:false };
   var markers = {}; // id -> leaflet marker
 
   // ---------- helpers ----------
@@ -728,7 +875,9 @@
     if (state.search){
       var q = state.search.toLowerCase();
       var hay = (p.name||'');
-      (p.supplies||[]).forEach(function(s){ hay += ' ' + (s.company||'') + ' ' + (s.supplier||''); });
+      (p.cementEntries||[]).forEach(function(e){
+        hay += ' ' + (e.company||'') + ' ' + (e.type||'') + ' ' + (e.suppliers||[]).join(' ');
+      });
       if (hay.toLowerCase().indexOf(q) < 0) return false;
     }
     return true;
@@ -782,20 +931,48 @@
     side.classList.remove('open'); side.setAttribute('aria-hidden','true');
     state.selected = null; renderMarkers();
   }
+  function fmtDate(d){
+    if (!d) return '';
+    try{
+      var dt = new Date(d+'T00:00:00');
+      if (isNaN(dt)) return d;
+      return dt.toLocaleDateString(undefined,{ day:'2-digit', month:'short', year:'numeric' });
+    }catch(e){ return d; }
+  }
+  function isOwnCompany(name){
+    if (!name) return false;
+    return state.companies.some(function(c){ return c.name.toLowerCase()===name.toLowerCase() && c.isOwn; });
+  }
   function openDetail(id){
     var p = state.plants.find(function(x){ return x.id===id; });
     if (!p) return;
     state.selected = id; renderMarkers();
     var st = STATUS[p.status] || STATUS.none;
-    var cement = (p.cementTypes||'').split(',').map(function(s){return s.trim();}).filter(Boolean);
-    var cementHtml = cement.length
-      ? '<div class="taglist">'+cement.map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join('')+'</div>'
-      : '<span class="empty">Not recorded</span>';
-    var supplies = p.supplies || [];
-    var supplyHtml = supplies.length
-      ? '<div class="supply-view">'+supplies.map(function(s){
-          return '<div class="supply-item"><div class="co">'+esc(s.company||'Unnamed company')+'</div>'
-            + '<div class="sp">Supplier: <b>'+(s.supplier?esc(s.supplier):'\u2014')+'</b></div></div>';
+    var entries = p.cementEntries || [];
+    var cevHtml = entries.length
+      ? '<div class="cev-list">'+entries.map(function(e){
+          var own = isOwnCompany(e.company);
+          var sortedVol = e.volumeLog.slice().sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
+          var volHtml = sortedVol.length
+            ? '<div class="vh">'+sortedVol.map(function(v){
+                return '<div class="vh-row"><span>'+fmtDate(v.date)+'</span><span>'+v.tons+' t</span></div>';
+              }).join('')+'</div>'
+            : '<div class="vh" style="font-style:italic;">No volume recorded yet</div>';
+          var trendHtml = '';
+          if (own && sortedVol.length>=2){
+            var first = sortedVol[0], last = sortedVol[sortedVol.length-1];
+            var pct = (first.tons>0) ? ((last.tons-first.tons)/first.tons*100) : (last.tons>0?100:0);
+            var cls = pct>0.5 ? 'up' : (pct<-0.5 ? 'down' : 'flat');
+            var arrow = pct>0.5 ? '\u2191' : (pct<-0.5 ? '\u2193' : '\u2192');
+            trendHtml = '<div class="trend '+cls+'">'+arrow+' '+(pct>=0?'+':'')+pct.toFixed(1)+'% since '+fmtDate(first.date)+'</div>';
+          } else if (own && sortedVol.length===1){
+            trendHtml = '<div class="trend flat">First record \u2014 add another date to see the trend</div>';
+          }
+          return '<div class="cev-item"><div class="co-row"><span class="co">'+esc(e.company||'Unnamed company')+'</span>'
+            + (own?'<span class="own-badge">\u2605 Ours</span>':'')+'</div>'
+            + (e.type ? '<div class="ty">'+esc(e.type)+'</div>' : '')
+            + '<div class="sp">Suppliers: <b>'+(e.suppliers.length?esc(e.suppliers.join(', ')):'\u2014')+'</b></div>'
+            + volHtml + trendHtml + '</div>';
         }).join('')+'</div>'
       : '<span class="empty">Not recorded</span>';
     function row(k, v, isEmpty){
@@ -812,9 +989,7 @@
       + '</div><button class="side-close" id="sClose" aria-label="Close">'
         + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>'
       + '<div class="side-body"><div class="spec">'
-        + row('Cement supply', supplyHtml, false)
-        + row('Cement type', cementHtml, false)
-        + row('Monthly volume', val(p.volume), !p.volume)
+        + row('Cement companies', cevHtml, false)
         + row('Contact', val(p.contactName), !p.contactName)
         + row('Phone', phone, false)
         + row('Survey date', val(p.surveyDate), !p.surveyDate)
@@ -843,9 +1018,12 @@
 
   function openForm(p){
     var isNew = !p.id;
-    var d = Object.assign({ name:'', supplies:[], cementTypes:'', volume:'', contactName:'',
+    var d = Object.assign({ name:'', cementEntries:[], contactName:'',
       phone:'', status:'none', surveyDate:today(), notes:'', lat:ALEX[0], lng:ALEX[1] }, p);
-    var sup = (d.supplies||[]).map(function(s){ return { company:s.company||'', supplier:s.supplier||'' }; });
+    var entries = (d.cementEntries||[]).map(function(e){
+      return { company:e.company||'', type:e.type||'', suppliers:(e.suppliers||[]).slice(),
+        volumeLog: (e.volumeLog||[]).map(function(v){ return { date:v.date||today(), tons:(v.tons==null?0:v.tons) }; }) };
+    });
     function seg(s){
       var on = d.status===s, ss = STATUS[s];
       var style = on ? ' style="border-color:'+ss.color+';box-shadow:inset 0 0 0 1px '+ss.color+'"' : '';
@@ -859,18 +1037,17 @@
       + '<div class="side-body">'
         + '<div class="field"><label>Plant name</label><input id="fName" type="text" value="'+esc(d.name)+'" placeholder="e.g. Nile Ready-Mix, Site 4" /></div>'
         + '<div class="field"><label>Our share with this plant</label><div class="status-seg" id="fStatus">'+seg('exclusive')+seg('large')+seg('small')+seg('none')+'</div></div>'
-        + '<div class="field"><label>Cement companies &amp; suppliers</label>'
-          + '<div class="supply-list" id="fSupplies"></div>'
-          + '<button type="button" class="supply-add" id="fSupAdd"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Add cement company</button>'
-          + '<div class="hint">Each cement company the plant buys from, and the supplier who delivers it.</div></div>'
-        + '<div class="field"><label>Cement type(s)</label><input id="fCement" type="text" value="'+esc(d.cementTypes)+'" placeholder="e.g. CEM I 42.5N, CEM II" /><div class="hint">Separate multiple types with commas</div></div>'
-        + '<div class="grid2">'
-          + '<div class="field"><label>Monthly volume</label><input id="fVolume" type="text" value="'+esc(d.volume)+'" placeholder="e.g. 3,000 t/mo" /></div>'
-          + '<div class="field"><label>Survey date</label><input id="fDate" type="date" value="'+esc(d.surveyDate)+'" /></div>'
-        + '</div>'
+        + '<div class="field"><label>Cement companies</label>'
+          + '<div id="fEntries"></div>'
+          + '<button type="button" class="entries-add" id="fEntryAdd"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Add cement company</button>'
+          + '<div class="hint">Pick from your saved company list, or add a new one \u2014 it\u2019s saved for next time. Record each dated volume as you survey to track the trend.</div></div>'
         + '<div class="grid2">'
           + '<div class="field"><label>Contact person</label><input id="fContact" type="text" value="'+esc(d.contactName)+'" placeholder="Name / role" /></div>'
           + '<div class="field"><label>Phone</label><input id="fPhone" type="text" value="'+esc(d.phone)+'" placeholder="+20…" /></div>'
+        + '</div>'
+        + '<div class="grid2">'
+          + '<div class="field"><label>Survey date</label><input id="fDate" type="date" value="'+esc(d.surveyDate)+'" /></div>'
+          + '<div class="field"></div>'
         + '</div>'
         + '<div class="grid2">'
           + '<div class="field"><label>Latitude</label><input id="fLat" type="number" step="any" value="'+d.lat+'" /></div>'
@@ -893,31 +1070,96 @@
       var col = STATUS[chosen].color; b.style.borderColor = col; b.style.boxShadow = 'inset 0 0 0 1px '+col;
     };});
 
-    // ---- cement companies & suppliers editor ----
-    var supBox = $('fSupplies');
-    function syncSupplies(){
-      var arr = [];
-      supBox.querySelectorAll('.supply-row').forEach(function(r){
-        arr.push({ company:r.querySelector('.s-co').value, supplier:r.querySelector('.s-sp').value });
+    // ---- cement companies editor: company picker + type + suppliers + dated volume log ----
+    var entBox = $('fEntries');
+
+    function companyOptionsHtml(selected){
+      var opts = '<option value=""'+(!selected?' selected':'')+'>Select company\u2026</option>';
+      state.companies.forEach(function(c){
+        opts += '<option value="'+esc(c.name)+'"'+(c.name===selected?' selected':'')+'>'
+          + esc(c.name)+(c.isOwn?' \u2605 (Ours)':'')+'</option>';
       });
-      return arr;
+      opts += '<option value="__new__">+ Add new company\u2026</option>';
+      return opts;
     }
-    function renderSupplies(){
-      supBox.innerHTML = sup.length ? sup.map(function(s){
-        return '<div class="supply-row">'
-          + '<input class="s-co" placeholder="Cement company" value="'+esc(s.company||'')+'" />'
-          + '<input class="s-sp" placeholder="Supplier" value="'+esc(s.supplier||'')+'" />'
-          + '<button type="button" class="rm" aria-label="Remove"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>'
-          + '</div>';
-      }).join('') : '<div class="supply-empty">No cement companies added yet.</div>';
-      supBox.querySelectorAll('.rm').forEach(function(b, i){
-        b.onclick = function(){ sup = syncSupplies(); sup.splice(i,1); renderSupplies(); };
+
+    function renderEntries(){
+      if (!entries.length){
+        entBox.innerHTML = '<div class="entries-empty">No cement companies added yet.</div>';
+        return;
+      }
+      entBox.innerHTML = entries.map(function(en, i){
+        var supRows = en.suppliers.map(function(s,j){
+          return '<div class="mini-row"><input class="sup-in" data-ei="'+i+'" data-si="'+j+'" value="'+esc(s)+'" placeholder="Supplier name" />'
+            + '<button type="button" class="mini-rm" data-act="rmsup" data-ei="'+i+'" data-si="'+j+'" aria-label="Remove supplier">\u2715</button></div>';
+        }).join('') || '<div class="entries-empty" style="padding:0 0 2px;">No suppliers added yet</div>';
+
+        var volSorted = en.volumeLog.map(function(v,origIdx){ return { v:v, origIdx:origIdx }; })
+          .sort(function(a,b){ return a.v.date<b.v.date?-1:a.v.date>b.v.date?1:0; });
+        var volRows = volSorted.map(function(x){
+          return '<div class="mini-row"><input type="date" class="vol-date" data-ei="'+i+'" data-vi="'+x.origIdx+'" value="'+esc(x.v.date)+'" />'
+            + '<input type="number" step="any" min="0" class="vol-tons" data-ei="'+i+'" data-vi="'+x.origIdx+'" value="'+x.v.tons+'" placeholder="Tons" />'
+            + '<button type="button" class="mini-rm" data-act="rmvol" data-ei="'+i+'" data-vi="'+x.origIdx+'" aria-label="Remove record">\u2715</button></div>';
+        }).join('') || '<div class="entries-empty" style="padding:0 0 2px;">No volume recorded yet</div>';
+
+        return '<div class="entry-card">'
+          + '<div class="entry-head">'
+            + '<select class="ce-company" data-ei="'+i+'">'+companyOptionsHtml(en.company)+'</select>'
+            + '<button type="button" class="entry-rm" data-act="rment" data-ei="'+i+'" aria-label="Remove company"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>'
+          + '</div>'
+          + '<input class="ce-type" data-ei="'+i+'" value="'+esc(en.type)+'" placeholder="Cement type / grade (e.g. CEM I 42.5N)" style="margin-top:7px;" />'
+          + '<div class="mini-label">Suppliers</div>' + supRows
+          + '<button type="button" class="mini-add" data-act="addsup" data-ei="'+i+'">+ Add supplier</button>'
+          + '<div class="mini-label" style="margin-top:9px;">Volume records (tons, by date)</div>' + volRows
+          + '<button type="button" class="mini-add" data-act="addvol" data-ei="'+i+'">+ Add volume record</button>'
+        + '</div>';
+      }).join('');
+      wireEntryEvents();
+    }
+
+    function wireEntryEvents(){
+      entBox.querySelectorAll('.ce-company').forEach(function(sel){
+        sel.onchange = function(){
+          var i = +this.getAttribute('data-ei');
+          if (this.value === '__new__'){
+            openCompanyModal(function(name){
+              entries[i].company = name || (entries[i].company || '');
+              renderEntries();
+            });
+          } else {
+            entries[i].company = this.value;
+          }
+        };
+      });
+      entBox.querySelectorAll('.ce-type').forEach(function(inp){
+        inp.oninput = function(){ entries[+this.getAttribute('data-ei')].type = this.value; };
+      });
+      entBox.querySelectorAll('.sup-in').forEach(function(inp){
+        inp.oninput = function(){ entries[+this.getAttribute('data-ei')].suppliers[+this.getAttribute('data-si')] = this.value; };
+      });
+      entBox.querySelectorAll('.vol-date').forEach(function(inp){
+        inp.onchange = function(){ entries[+this.getAttribute('data-ei')].volumeLog[+this.getAttribute('data-vi')].date = this.value; };
+      });
+      entBox.querySelectorAll('.vol-tons').forEach(function(inp){
+        inp.oninput = function(){ entries[+this.getAttribute('data-ei')].volumeLog[+this.getAttribute('data-vi')].tons = parseFloat(this.value)||0; };
+      });
+      entBox.querySelectorAll('[data-act]').forEach(function(btn){
+        btn.onclick = function(){
+          var act = this.getAttribute('data-act'), i = +this.getAttribute('data-ei');
+          if (act==='rment'){ entries.splice(i,1); }
+          else if (act==='addsup'){ entries[i].suppliers.push(''); }
+          else if (act==='rmsup'){ entries[i].suppliers.splice(+this.getAttribute('data-si'),1); }
+          else if (act==='addvol'){ entries[i].volumeLog.push({ date:today(), tons:0 }); }
+          else if (act==='rmvol'){ entries[i].volumeLog.splice(+this.getAttribute('data-vi'),1); }
+          renderEntries();
+        };
       });
     }
-    renderSupplies();
-    $('fSupAdd').onclick = function(){
-      sup = syncSupplies(); sup.push({ company:'', supplier:'' }); renderSupplies();
-      var cos = supBox.querySelectorAll('.s-co'); if (cos.length) cos[cos.length-1].focus();
+    renderEntries();
+    $('fEntryAdd').onclick = function(){
+      entries.push({ company:'', type:'', suppliers:[], volumeLog:[] });
+      renderEntries();
+      var sels = entBox.querySelectorAll('.ce-company'); if (sels.length) sels[sels.length-1].focus();
     };
 
     $('fClose').onclick = function(){ isNew ? closeSide() : openDetail(d.id); };
@@ -925,16 +1167,24 @@
     $('fSave').onclick = function(){
       var lat = parseFloat($('fLat').value), lng = parseFloat($('fLng').value);
       if (isNaN(lat) || isNaN(lng)){ toast('Latitude and longitude are required'); return; }
-      var supplies = syncSupplies()
-        .map(function(s){ return { company:(s.company||'').trim(), supplier:(s.supplier||'').trim() }; })
-        .filter(function(s){ return s.company || s.supplier; });
+      var cementEntries = entries
+        .map(function(e){
+          return {
+            id: uid(),
+            company: (e.company||'').trim(),
+            type: (e.type||'').trim(),
+            suppliers: (e.suppliers||[]).map(function(s){ return (s||'').trim(); }).filter(Boolean),
+            volumeLog: (e.volumeLog||[]).filter(function(v){ return v.date; })
+              .map(function(v){ return { date:v.date, tons:Number(v.tons)||0 }; })
+              .sort(function(a,b){ return a.date<b.date?-1:a.date>b.date?1:0; })
+          };
+        })
+        .filter(function(e){ return e.company || e.type || e.suppliers.length || e.volumeLog.length; });
       var rec = {
         id: d.id || uid(),
         name: $('fName').value.trim() || 'Unnamed plant',
         status: chosen,
-        supplies: supplies,
-        cementTypes: $('fCement').value.trim(),
-        volume: $('fVolume').value.trim(),
+        cementEntries: cementEntries,
         contactName: $('fContact').value.trim(),
         phone: $('fPhone').value.trim(),
         surveyDate: $('fDate').value,
@@ -1030,6 +1280,35 @@
   $('passCancel').onclick = closePass;
   $('passInput').addEventListener('keydown', function(e){ if (e.key==='Enter') tryUnlock(); });
   passModal.addEventListener('click', function(e){ if (e.target===passModal) closePass(); });
+
+  // ---------- add-new-company modal (replaces prompt/confirm, which iOS ----------
+  // ---------- silently blocks for installed home-screen apps)             ----------
+  var companyModal = $('companyModal'), companyModalCb = null;
+  function openCompanyModal(cb){
+    companyModalCb = cb;
+    $('cmName').value = ''; $('cmOwn').checked = false;
+    companyModal.classList.add('open'); companyModal.setAttribute('aria-hidden','false');
+    setTimeout(function(){ $('cmName').focus(); }, 50);
+  }
+  function closeCompanyModal(runCancel){
+    companyModal.classList.remove('open'); companyModal.setAttribute('aria-hidden','true');
+    var cb = companyModalCb; companyModalCb = null;
+    if (runCancel && cb) cb(null);
+  }
+  $('cmClose').onclick = function(){ closeCompanyModal(true); };
+  $('cmCancel').onclick = function(){ closeCompanyModal(true); };
+  $('cmSave').onclick = function(){
+    var name = $('cmName').value.trim();
+    if (!name){ toast('Enter a company name'); return; }
+    var isOwn = $('cmOwn').checked;
+    var exists = state.companies.some(function(c){ return c.name.toLowerCase()===name.toLowerCase(); });
+    if (!exists){ state.companies.push({ name:name, isOwn:isOwn }); persistCompanies(); }
+    var cb = companyModalCb; companyModalCb = null;
+    companyModal.classList.remove('open'); companyModal.setAttribute('aria-hidden','true');
+    if (cb) cb(name);
+  };
+  $('cmName').addEventListener('keydown', function(e){ if (e.key==='Enter') $('cmSave').click(); });
+  companyModal.addEventListener('click', function(e){ if (e.target===companyModal) closeCompanyModal(true); });
 
   // ---------- parse a pasted location ----------
   function parseLocation(raw){
@@ -1171,12 +1450,22 @@
     var L = [];
     L.push('Plant Survey \u2014 ' + (p.name || 'Unnamed plant'));
     L.push('Our share: ' + st.label);
-    if ((p.supplies||[]).length){
-      L.push('Cement companies & suppliers:');
-      p.supplies.forEach(function(s){ L.push('- ' + (s.company||'?') + (s.supplier ? (' \u2014 ' + s.supplier) : '')); });
-    }
-    if (p.cementTypes) L.push('Cement type: ' + p.cementTypes);
-    if (p.volume) L.push('Monthly volume: ' + p.volume);
+    (p.cementEntries||[]).forEach(function(e){
+      var own = isOwnCompany(e.company);
+      var line = '- ' + (e.company||'Unnamed company') + (own?' (Ours)':'') + (e.type?' \u2014 '+e.type:'');
+      if (e.suppliers.length) line += ' | Suppliers: ' + e.suppliers.join(', ');
+      L.push(line);
+      if (e.volumeLog.length){
+        var sorted = e.volumeLog.slice().sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
+        var last = sorted[sorted.length-1];
+        L.push('  Latest volume: ' + last.tons + ' t (' + last.date + ')');
+        if (own && sorted.length>=2){
+          var first = sorted[0];
+          var pct = first.tons>0 ? ((last.tons-first.tons)/first.tons*100) : (last.tons>0?100:0);
+          L.push('  Trend: ' + (pct>=0?'+':'') + pct.toFixed(1) + '% since ' + first.date);
+        }
+      }
+    });
     var c = [p.contactName, p.phone].filter(Boolean).join(' \u2014 ');
     if (c) L.push('Contact: ' + c);
     if (p.surveyDate) L.push('Surveyed: ' + p.surveyDate);
@@ -1248,14 +1537,29 @@
   $('expCsv').onclick = function(){
     menu.classList.remove('open');
     if (!state.plants.length){ toast('No plants to export'); return; }
-    function supplyStr(p){
-      return (p.supplies||[]).map(function(s){
-        return (s.company||'') + (s.supplier ? ' \u2014 ' + s.supplier : '');
+    function entriesStr(p){
+      return (p.cementEntries||[]).map(function(e){
+        var bits = [e.company||'?'];
+        if (isOwnCompany(e.company)) bits.push('(Ours)');
+        if (e.type) bits.push('\u2014 '+e.type);
+        if (e.suppliers.length) bits.push('| Suppliers: '+e.suppliers.join(', '));
+        if (e.volumeLog.length){
+          var sorted = e.volumeLog.slice().sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
+          var last = sorted[sorted.length-1];
+          bits.push('| Latest: '+last.tons+' t ('+last.date+')');
+        }
+        return bits.join(' ');
       }).join('; ');
     }
-    var head = ['Plant','Share status','Cement companies & suppliers','Cement types','Monthly volume','Contact','Phone','Latitude','Longitude','Survey date','Notes'];
+    function trendStr(p){
+      var t = ownTrend(p);
+      if (!t) return '';
+      if (t.count<2) return t.last.tons+' t ('+t.last.date+') \u2014 first record';
+      return (t.pct>=0?'+':'')+t.pct.toFixed(1)+'% ('+t.first.tons+'\u2192'+t.last.tons+' t, '+t.first.date+'\u2192'+t.last.date+')';
+    }
+    var head = ['Plant','Share status','Cement companies','Our volume trend','Contact','Phone','Latitude','Longitude','Survey date','Notes'];
     var rows = state.plants.map(function(p){
-      return [p.name, (STATUS[p.status]||{}).label||p.status, supplyStr(p), p.cementTypes, p.volume,
+      return [p.name, (STATUS[p.status]||{}).label||p.status, entriesStr(p), trendStr(p),
         p.contactName, p.phone, p.lat, p.lng, p.surveyDate, p.notes].map(csvCell).join(',');
     });
     download('concrete-plants-'+today()+'.csv', '\ufeff'+head.map(csvCell).join(',')+'\n'+rows.join('\n'), 'text/csv');
@@ -1298,9 +1602,65 @@
     }
   };
 
+  // ---------- progress report ----------
+  var reportModal = $('reportModal');
+  function openReport(){
+    var rows = state.plants
+      .map(function(p){ return { p:p, t:ownTrend(p) }; })
+      .filter(function(x){ return x.t; });
+
+    rows.sort(function(a,b){
+      if (a.t.count>=2 && b.t.count<2) return -1;
+      if (a.t.count<2 && b.t.count>=2) return 1;
+      return b.t.pct - a.t.pct;
+    });
+
+    var withTrend = rows.filter(function(x){ return x.t.count>=2; });
+    var sumFirst = withTrend.reduce(function(s,x){ return s+x.t.first.tons; }, 0);
+    var sumLast = withTrend.reduce(function(s,x){ return s+x.t.last.tons; }, 0);
+    var overallPct = sumFirst>0 ? ((sumLast-sumFirst)/sumFirst*100) : (sumLast>0?100:0);
+    var overallCls = overallPct>0.5?'up':(overallPct<-0.5?'down':'');
+
+    $('rpSummary').innerHTML =
+      '<div class="s"><div class="n '+overallCls+'">'+(withTrend.length?((overallPct>=0?'+':'')+overallPct.toFixed(1)+'%'):'\u2014')+'</div><div class="l">Overall change</div></div>'
+      + '<div class="s"><div class="n">'+rows.length+'</div><div class="l">Plants with our volume</div></div>'
+      + '<div class="s"><div class="n">'+Math.round(sumLast)+' t</div><div class="l">Latest total (tracked plants)</div></div>';
+
+    if (!rows.length){
+      $('rpBody').innerHTML = '<div class="report-empty">No volume records for our company yet.<br>Add a cement entry marked "Ours" with at least one dated volume to start tracking.</div>';
+    } else {
+      $('rpBody').innerHTML = rows.map(function(x){
+        var t = x.t, cls = t.count<2 ? '' : (t.pct>0.5?'up':(t.pct<-0.5?'down':'flat'));
+        var right = t.count<2
+          ? '<span class="trend flat" style="margin:0;">'+t.last.tons+' t \u2014 first record</span>'
+          : '<span class="trend '+cls+'" style="margin:0;">'+(t.pct>0.5?'\u2191':t.pct<-0.5?'\u2193':'\u2192')+' '+(t.pct>=0?'+':'')+t.pct.toFixed(1)+'%</span>';
+        return '<div class="report-row"><div class="nm">'+esc(x.p.name)
+          + '<div class="detail">'+t.first.tons+' t ('+fmtDate(t.first.date)+') \u2192 '+t.last.tons+' t ('+fmtDate(t.last.date)+')</div></div>'
+          + right + '</div>';
+      }).join('');
+    }
+    reportModal.classList.add('open'); reportModal.setAttribute('aria-hidden','false');
+  }
+  function closeReport(){ reportModal.classList.remove('open'); reportModal.setAttribute('aria-hidden','true'); }
+  $('reportBtn').onclick = openReport;
+  $('rpClose').onclick = closeReport;
+  reportModal.addEventListener('click', function(e){ if (e.target===reportModal) closeReport(); });
+  $('rpExport').onclick = function(){
+    var rows = state.plants.map(function(p){ return { p:p, t:ownTrend(p) }; }).filter(function(x){ return x.t; });
+    if (!rows.length){ toast('No progress data to export yet'); return; }
+    rows.sort(function(a,b){ return b.t.pct - a.t.pct; });
+    var head = ['Plant','First date','First (t)','Latest date','Latest (t)','Change (%)'];
+    var out = rows.map(function(x){
+      return [x.p.name, x.t.first.date, x.t.first.tons, x.t.last.date, x.t.last.tons,
+        x.t.count>=2 ? x.t.pct.toFixed(1) : ''].map(csvCell).join(',');
+    });
+    download('our-volume-progress-'+today()+'.csv', '\ufeff'+head.map(csvCell).join(',')+'\n'+out.join('\n'), 'text/csv');
+  };
+
   // ---------- boot ----------
   var applyingRemote = false;
   (async function(){
+    state.companies = await CompanyStore.load();
     state.plants = await Store.load();
     refresh();
     if (state.plants.length){
@@ -1325,6 +1685,12 @@
         }
         applyingRemote = false;
       });
+      if (fbCompaniesRef){
+        fbCompaniesRef.on('value', function(snap){
+          var arr = snap.val() || [];
+          state.companies = Array.isArray(arr) ? arr : [];
+        });
+      }
     }
   })();
 })();
