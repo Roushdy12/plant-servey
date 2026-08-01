@@ -514,6 +514,8 @@
 <div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
 /* ---- make this single file installable as an app (PWA) ---- */
 (function(){
@@ -564,6 +566,28 @@
 <script>
 (function(){
   "use strict";
+
+  // =====================================================================
+  //  LIVE SHARED MAP (optional) — paste your free Firebase keys below to
+  //  turn this into a live map everyone shares. Leave as-is to keep this
+  //  a private, single-device survey (nothing breaks either way).
+  //  How to get these values: see the setup guide you were given.
+  // =====================================================================
+  var FIREBASE_CONFIG = {
+    apiKey:      "AIzaSyCiIVWiyFRTdl0FynLYiQUPYQwsHJZSP9s",
+    authDomain:  "plant-servey.firebaseapp.com",
+    databaseURL: "https://plant-servey-default-rtdb.firebaseio.com",
+    projectId:   "plant-servey"
+  };
+  var LIVE_MODE = !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey.indexOf('PASTE_') !== 0);
+  var fbRef = null;
+  if (LIVE_MODE){
+    try{
+      firebase.initializeApp(FIREBASE_CONFIG);
+      fbRef = firebase.database().ref('plants');
+    }catch(e){ LIVE_MODE = false; fbRef = null; }
+  }
+  // =====================================================================
 
   var STATUS = {
     exclusive: { label:"Exclusive customer",        short:"Exclusive", color:"#0b5e33", tint:"#e2f0e8", ink:"#0b5e33" },
@@ -622,6 +646,18 @@
   })();
   var Store = {
     async load(){
+      if (LIVE_MODE && fbRef){
+        try{
+          var snap = await fbRef.once('value');
+          var arr = snap.val() || [];
+          if ((!arr || !arr.length) && SEED && SEED.length){
+            // first-ever load of a shared database, seeded from a survey file — push it up once
+            await fbRef.set(SEED);
+            return SEED.map(normalize);
+          }
+          return arr.map(normalize);
+        }catch(e){ console.error('live load failed, falling back to local', e); }
+      }
       if (SEED && SEED.length){
         try{ if (window.localStorage && !window.localStorage.getItem(LS_KEY)){
           window.localStorage.setItem(LS_KEY, JSON.stringify(SEED));
@@ -629,7 +665,7 @@
         return SEED.map(normalize);
       }
       if (window.storage){
-        try{ var r = await window.storage.get('plants'); var arr = r ? JSON.parse(r.value) : []; return arr.map(normalize); }
+        try{ var r = await window.storage.get('plants'); var arr2 = r ? JSON.parse(r.value) : []; return arr2.map(normalize); }
         catch(e){ return []; }
       }
       try{
@@ -638,6 +674,10 @@
       }catch(e){ return (window.__plants || []).map(normalize); }
     },
     async save(plants){
+      if (LIVE_MODE && fbRef){
+        try{ await fbRef.set(plants); return; }
+        catch(e){ console.error('live save failed', e); }
+      }
       if (window.storage){
         try{ await window.storage.set('plants', JSON.stringify(plants)); return; }
         catch(e){ console.error('save failed', e); }
@@ -1260,11 +1300,32 @@
   };
 
   // ---------- boot ----------
+  var applyingRemote = false;
   (async function(){
     state.plants = await Store.load();
     refresh();
     if (state.plants.length){
       try{ map.fitBounds(L.latLngBounds(state.plants.map(function(p){return [p.lat,p.lng];})).pad(0.25)); }catch(e){}
+    }
+    if (LIVE_MODE && fbRef){
+      var badge = document.createElement('div');
+      badge.textContent = '\u25CF Live \u2014 shared with your team';
+      badge.style.cssText = 'position:absolute;z-index:1100;left:16px;bottom:16px;background:#0b5e33;color:#fff;'
+        + 'font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.04em;padding:6px 11px;'
+        + 'border-radius:20px;box-shadow:0 2px 8px rgba(20,30,40,.2);';
+      document.body.appendChild(badge);
+
+      fbRef.on('value', function(snap){
+        var arr = snap.val() || [];
+        applyingRemote = true;
+        state.plants = arr.map(normalize);
+        refresh();
+        if (state.selected){
+          var still = state.plants.find(function(x){ return x.id===state.selected; });
+          if (!still) closeSide();
+        }
+        applyingRemote = false;
+      });
     }
   })();
 })();
